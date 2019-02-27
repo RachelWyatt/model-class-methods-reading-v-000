@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
 
   def index
-    @posts = Post.all
     # provide a list of authors to the view for the filter control
     @authors = Author.all
 
@@ -10,9 +9,9 @@ class PostsController < ApplicationController
       @posts = Post.by_author(params[:author])
     elsif !params[:date].blank?
       if params[:date] == "Today"
-        @posts = Post.where("created_at >=?", Time.zone.today.beginning_of_day)
+        @posts = Post.from_today
       else
-        @posts = Post.where("created_at <?", Time.zone.today.beginning_of_day)
+        @posts = Post.old_news
       end
     else
       # if no filters are applied, show all posts
